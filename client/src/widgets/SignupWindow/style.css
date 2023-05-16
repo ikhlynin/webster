@@ -1,0 +1,13 @@
+.signup_window_box {
+	width: 15rem;
+	height: 18rem;
+	background-color: #ffffff44;
+	border-radius: 2rem;
+	position: absolute;
+	z-index: 30;
+	right: 0.5rem;
+	padding: 1rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}

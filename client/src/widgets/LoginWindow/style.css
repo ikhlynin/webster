@@ -1,0 +1,13 @@
+.login_window_box {
+	width: 15rem;
+	height: 15rem;
+	background-color: #ffffff44;
+	border-radius: 2rem;
+	position: absolute;
+	z-index: 30;
+	right: 4.5rem;
+	padding: 1rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}

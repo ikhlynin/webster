@@ -1,0 +1,39 @@
+.auth_window_popup_class {
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: auth_window_popup_animation;
+}
+
+@keyframes auth_window_popup_animation {
+    0% {
+        top: -18rem;
+    }
+
+    80% {
+        top: 6.5rem;
+    }
+
+    100% {
+        top: 5rem;
+    }
+}
+
+.auth_window_hiding_class {
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: auth_window_hiding_animation;
+}
+
+@keyframes auth_window_hiding_animation {
+    0% {
+        top: 5rem;
+    }
+
+    30% {
+        top: 6.5rem;
+    }
+
+    100% {
+        top: -18rem;
+    }
+}

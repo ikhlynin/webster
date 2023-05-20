@@ -1,0 +1,106 @@
+.login_window_box {
+	width: 15rem;
+	height: 15rem;
+	background-color: #ffffff44;
+	border-radius: 2rem;
+	position: absolute;
+	z-index: 30;
+	right: 4.5rem;
+	padding: 1rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.auth_window_popup_class {
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+	animation-name: auth_window_popup_animation;
+}
+
+@keyframes auth_window_popup_animation {
+	0% {
+		top: -18rem;
+	}
+
+	80% {
+		top: 6.5rem;
+	}
+
+	100% {
+		top: 5rem;
+	}
+}
+
+.auth_window_hiding_class {
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+	animation-name: auth_window_hiding_animation;
+}
+
+@keyframes auth_window_hiding_animation {
+	0% {
+		top: 5rem;
+	}
+
+	30% {
+		top: 6.5rem;
+	}
+
+	100% {
+		top: -18rem;
+	}
+}
+
+.auth_input {
+	width: 12rem;
+	height: 2.5rem;
+	font-size: 1.4rem;
+	background-color: #ffffff00;
+	border: none;
+	border-bottom: 0.25rem solid #ffffff44;
+	transition: all 0.5s ease;
+	color: rgba(255, 255, 255, 0.781);
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.auth_input:focus {
+	outline: none;
+	border: none;
+	border-bottom: 0.25rem solid #0c03338c;
+}
+
+.auth_input::selection {
+	background-color: #36196db6;
+}
+
+.auth_input::placeholder {
+	color: rgba(255, 255, 255, 0.39);
+}
+
+.auth_button {
+	background-color: #ffffff6b;
+	color: white;
+	border: none;
+	font-size: 1.4rem;
+	height: 3rem;
+	width: 100%;
+	margin-top: 0.6rem;
+	transition: all 0.3s ease;
+	border-radius: 0.5rem;
+	font-family: raleway_f, sans-serif;
+}
+
+.auth_button:hover {
+	background-color: #ffffff34;
+}
+
+.auth_error {
+	color: #ee4b4b;
+}
+
+.hidden {
+	visibility: hidden;
+	display: none;
+}

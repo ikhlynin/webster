@@ -1,0 +1,50 @@
+.navbar_box {
+	height: 4.5rem;
+	width: 100%;
+	background-color: #ffffff44;
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	z-index: 20;
+	user-select: none;
+}
+
+.navbar_button_box {
+	padding: 1.5rem 1rem;
+}
+
+.navbar_button {
+	background-color: #ffffff6b;
+	padding: 1rem 1.5rem;
+	margin-left: 1.2rem;
+	border-radius: 0.5rem;
+	transition: all 0.3s ease;
+	color: white;
+}
+
+.navbar_button:hover {
+	background-color: #ffffff34;
+}
+
+.navbar_logo_box {
+	padding: 0.5rem 1.5rem;
+	display: flex;
+}
+
+.navbar_logo {
+	border-radius: 100%;
+	object-fit: cover;
+	width: 3.5rem;
+	margin-right: 1rem;
+}
+
+.navbar_logo_text {
+	border: none;
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.8rem;
+	font-weight: bold;
+	letter-spacing: 0.1rem;
+	margin-top: 0.4rem;
+
+}

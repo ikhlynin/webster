@@ -1,0 +1,17 @@
+.sidebar_instrument {
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    background-color: #ffffff44;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sidebar_instrument:hover {
+    background-color: #ffffff6e;
+}
+
+.instrument_img {
+    width: 2rem;
+    height: 2rem;
+}

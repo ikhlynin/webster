@@ -1,0 +1,11 @@
+.sidebar_box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding-top: 15vh;
+    top: 6rem;
+    left: 0;
+    width: 3rem;
+    height: 100%;
+    background-color: #ffffff44;
+}

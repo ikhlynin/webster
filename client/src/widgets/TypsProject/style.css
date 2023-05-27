@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Reem+Kufi+Fun:wght@700&display=swap');
+
+.box_cr_p {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.button_cr_p {
+	margin: 30px 0;
+	padding: 20px;
+	width: 300px;
+	border: none;
+	border-radius: 2rem;
+	background-color: rgba(255, 255, 255, 0.486);
+	transition: all 0.3s ease;
+	/* font-family: 'Amatic SC', cursive; */
+	font-family: 'Reem Kufi Fun', sans-serif;
+
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: rgb(34, 16, 51);
+}
+
+.button_cr_p:hover {
+	background-color: rgba(255, 255, 255, 0.651);
+}
+
+.box_from_tp {
+	z-index: 19;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Reem Kufi Fun', sans-serif;
+	color: rgb(6, 1, 10);
+}
+
+.hader_text_form_tp {
+	font-size: 2rem;
+	margin-bottom: 20px;
+}
+
+.flex_row_tp {
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 5px 17px;
+	margin: 25px 0;
+	border-radius: 50px;
+	box-shadow: 5px 1px 20px 5px rgba(180, 161, 204, 0.61);
+}
+
+.flex_row_tp label {
+	display: block;
+	white-space: nowrap;
+	margin: 3px;
+}
+
+.flex_row_tp input {
+	border: none;
+	margin-left: 5%;
+	background: rgba(0, 0, 0, 0);
+}
+
+.input_name_tp {
+	width: 50%;
+	border: none;
+}
+
+.input_size_tp {
+	width: 30%;
+}
+
+.box_flex_row_tp {
+	display: flex;
+	flex-direction: row;
+}
+
+.box_samples_tp {
+	margin: 15px 0 0 35px;
+
+}
+
+
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+/* IMAGE STYLES */
+.img_cr_p {
+	cursor: pointer;
+	width: 25%;
+	/* height: 45%; */
+	margin: 10px;
+
+}
+
+.feedback__text {
+	margin-bottom: 7px;
+	font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 600;
+	color: #282828;
+}
+
+.feedback__label {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 132px;
+	height: 32px;
+	margin: 11px 0 0;
+	padding: 8px 20px 7px;
+	border-radius: 5px;
+	font-family: OpenSans;
+	font-size: 12px;
+	text-align: center;
+	background-color: #bd7bf3;
+	color: #282828;
+	cursor: pointer;
+}
+
+.feedback__file {
+	display: none;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked+img {
+	outline: 2px solid rgb(145, 94, 187);
+}

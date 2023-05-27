@@ -1,0 +1,25 @@
+.box_all_holst_ed_p {
+    height: 200vh;
+    padding-top: 150px;
+    background-color: rgba(240, 240, 240, 0.226);
+}
+
+.box_holst_ed_p {
+    display: flex;
+    flex-direction: row\ ;
+}
+
+.sample-canvas {
+    border: 1px solid rgba(71, 71, 71, 0.452);
+    box-shadow: 5px 5px 5px rgba(71, 71, 71, 0.452);
+
+    /* background-color: green; */
+}
+
+.row_box_canvas {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 99%;
+}

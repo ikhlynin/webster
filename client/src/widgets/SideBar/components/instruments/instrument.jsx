@@ -10,7 +10,7 @@ import rectangle from './assets/rectangle.png'
 import ellipse from './assets/ellipse.png'
 import square from './assets/square.png'
 
-export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects }) => {
+export const Instrument = ({ onMove, createText, draw, setDraw, name, source, active, setActive1, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects, onAddSelection, onRemoveSelection }) => {
 
     const [modalActive, setModalActive] = useState(false)
 
@@ -23,6 +23,11 @@ export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAd
     const [figureModel, setfigureModel] = useState(false)
     const [figureBorderColor, setFigureBorderColor] = useState("#000000")
     const [figureColor, setFigureColor] = useState("#000000")
+    //TEXT
+    const [textFont, setTextFont] = useState("Arial")
+    const [textOpacity, setTextOpacity] = useState(100)
+    const [textSize, setTextSize] = useState(10)
+    const [textColor, setTextColor] = useState("#000000")
     const classSeeFigureRectangle = {
         rectangle: {
             width: "130px",
@@ -57,31 +62,46 @@ export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAd
         none: { width: "100px", }
 
     }
+
     function clickHandle() {
         setActive1(name);
+        onRemoveSelection();
+        onMove(false, true, true, true)
+        setDraw({ mode: false })
         switch (name) {
+            case 'move':
+                onMove(true, false, true, false)
+                break;
+            case 'select':
+                onAddSelection();
+                onMove(false, true, true, false)
+                break;
             case 'pen':
-                setDrawMode(false);
                 setModalActive(true);
                 break;
             case 'rectangle':
+
                 setModalActive(true);
                 break;
             case 'trash':
                 onDeleteObjects();
-                setActive1("move");
                 break;
-            default: setDrawMode(false); break;
+            case 'text':
+                setModalActive(true);
+                break;
+            default: setDraw({ mode: false }); break;
         }
     }
 
     const setDataPen = (event) => {
         event.preventDefault();
-        localStorage.setItem('penOpacity', penOpacity)
-        localStorage.setItem('penSize', penSize)
-        localStorage.setItem('penColor', penColor)
-        localStorage.setItem('modelPen', modelPen)
-        setDrawMode(true);
+        setDraw({ mode: true, typePen: modelPen, colorPen: penColor, sizePen: penSize, penOpacity: penOpacity });
+        setModalActive(false);
+    }
+
+    const setCreateText = (event) => {
+        event.preventDefault();
+        createText(textSize, textColor, textFont, textOpacity)
         setModalActive(false);
     }
 
@@ -102,9 +122,9 @@ export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAd
             default: break;
         }
         event.preventDefault();
-        setDrawMode(false);
+
+        setDraw({ mode: false, ...draw });
         setModalActive(false);
-        setActive1("move");
     }
 
     return (
@@ -144,7 +164,7 @@ export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAd
                                 </div>
                                 <div className="flex_row_tp">
                                     <label>Size:</label>
-                                    <input type="range" name="size" min="0" max="1000" value={penSize} onChange={(e) => { setPenSize(e.target.value) }} />
+                                    <input type="range" name="size" min="1" max="500" value={penSize} onChange={(e) => { setPenSize(e.target.value) }} />
                                     <label className='data_inpt_instr'>{penSize}</label>
                                 </div>
                                 <div className="flex_row_tp">
@@ -199,8 +219,39 @@ export const Instrument = ({ setDrawMode, name, source, active, setActive1, onAd
                             </div>
                             <button className="button_instr " onClick={setDataFigure} >Choose</button>
                         </form>
-                        :
-                        ''}
+                        : name === "text" ?
+                            <form className="box_from_tp">
+                                <p className="hader_text_form_tp">CREATING TEXT</p>
+                                <div className="box_flex_row_tp">
+                                    <div>
+                                        <div className="flex_row_tp">
+                                            <label>Font family:</label>
+                                            <select className='color_box_sd' onChange={(e) => { setTextFont(e.target.value) }}>
+                                                <option value="impact">Impact</option>
+                                                <option value="comic sans ms">Comic Sans MS</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="verdana">Verdana</option>
+                                                <option value="helvetica" selected>Helvetica</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex_row_tp">
+                                            <label>Size:</label>
+                                            <input className='color_box_sd' type="range" min="0" max="1000" value={textSize} onChange={(e) => { setTextSize(e.target.value) }} />
+                                            <label className='data_inpt_instr'>{textSize}</label>
+                                        </div>
+                                        <div className="flex_row_tp">
+                                            <label>Opacity:</label>
+                                            <input type="range" name="opacity" min="0" max="1" step="0.05" value={textOpacity} onChange={(e) => { setTextOpacity(e.target.value) }} />
+                                            <label className='data_inpt_instr'>{textOpacity}</label>
+                                        </div>
+                                        <div className="flex_row_tp">
+                                            <label>Color:</label>
+                                            <input className='color_box_sd' type='color' value={textColor} onChange={(e) => { setTextColor(e.target.value) }} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button className="button_instr " onClick={setCreateText} >Choose</button>
+                            </form> : ''}
 
             </Modal>
         </div>

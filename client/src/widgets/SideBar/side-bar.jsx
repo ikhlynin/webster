@@ -4,7 +4,6 @@ import move from './assets/move.png'
 import select from './assets/select.png'
 import crop from './assets/crop.png'
 import rectangle from './assets/rectangle.png'
-import circle from './assets/circle.png'
 import line from './assets/line.png'
 import pipette from './assets/pipette.png'
 import pen from './assets/pen.png'
@@ -15,8 +14,8 @@ import redo from './assets/redo.png'
 import undo from './assets/undo.png'
 import "./style.css"
 
-export const SideBar = ({ setDrawMode, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects }) => {
-    const [activeName, setActive] = useState("move")
+export const SideBar = ({ createText, draw, setDraw, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects, onAddSelection, onRemoveSelection, onMove }) => {
+    const [activeName, setActive] = useState('')
 
     const instruments = [
         { name: 'move', source: `${move}` },
@@ -36,8 +35,8 @@ export const SideBar = ({ setDrawMode, onAddRectangle, onAddCircle, onAddEllipse
     return (
         <div className='sidebar_box'>
             {instruments.map((item, index) =>
-                <Instrument setDrawMode={setDrawMode} name={item.name} source={item.source} key={index} active={activeName} setActive1={setActive}
-                    onAddRectangle={onAddRectangle} onAddCircle={onAddCircle} onAddEllipse={onAddEllipse} onDeleteObjects={onDeleteObjects} />
+                <Instrument onMove={onMove} createText={createText} draw={draw} setDraw={setDraw} name={item.name} source={item.source} key={index} active={activeName} setActive1={setActive}
+                    onAddRectangle={onAddRectangle} onAddCircle={onAddCircle} onAddEllipse={onAddEllipse} onDeleteObjects={onDeleteObjects} onAddSelection={onAddSelection} onRemoveSelection={onRemoveSelection} />
             )}
             <input className='color_box_sd' type='color' />
         </div>

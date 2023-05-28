@@ -1,10 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { Modal } from "../PopUp";
-
-import { Context } from "../../index.js";
 
 import "./style.css";
 import a3 from "./assets/a3.png";
@@ -138,8 +136,8 @@ export const Types = () => {
 
               <div className="flex_row_tp">
                 <label>File:</label>
-                <label for="file_out" class="feedback__label">download file </label>
-                <input type="file" id="file_out" class="feedback__file" onChange={imageUpload} />
+                <label for="file_out" className="feedback__label">download file </label>
+                <input type="file" id="file_out" className="feedback__file" onChange={imageUpload} />
               </div>
               <button className="button_instr " onClick={(e) => { setDataProject(e, 1) }}>
                 Create

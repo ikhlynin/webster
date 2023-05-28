@@ -1,24 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { fabric } from "fabric";
-
-import { Context } from "../../index.js";
 import { SideBar } from "../../widgets/SideBar";
 import { UpperBar } from "../../widgets/UpperBar";
-
-import photo1 from "./assets/kshoty.jpg";
-import photo2 from "./assets/kalyan.jpg";
-// import photo from "./assets/univers.jpg";
 
 import "./style.css";
 
 const EditorPage = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [drawMode, setDrawMode] = useState(false);
+  const [draw, setDraw] = useState({ mode: false, typePen: 'aboba', sizePen: 3, colorPen: "#000000", penOpacity: 100 });
+  const [moveCtr, set] = useState(false);
 
   const canvasName = location.state.canvasName;
   const canvasWidth = location.state.canvasWidth;
@@ -29,7 +23,13 @@ const EditorPage = () => {
 
   const fabricRef = React.useRef(null);
   const canvasRef = React.useRef(null);
-
+  ////////////////////////////////////////////Віделение обьектов////////////////////////////////
+  const onAddSelection = () => {
+    fabricRef.current.selection = true;
+  };
+  const onRemoveSelection = () => {
+    fabricRef.current.selection = false;
+  };
   /////////////////////////////////////////////Создание фигур/////////////////////////////////////
   const onAddRectangle = (color, borderCol, type) => {
     var rect = new fabric.Rect({
@@ -59,31 +59,62 @@ const EditorPage = () => {
     var ellipse = new fabric.Ellipse({
       rx: fabricRef.current.width / 14,
       ry: fabricRef.current.width / 20,
+      top: fabricRef.current.height / 2 - fabricRef.current.height / 4,
+      left: fabricRef.current.width / 2 - fabricRef.current.width / 4,
       fill: color,
       stroke: borderCol,
       strokeWidth: 3
     });
     fabricRef.current.add(ellipse);
   };
-
+  /////////////////////////////////////////////Удаление/////////////////////////////////////////////
   const onDeleteObjects = () => {
+    console.log(fabricRef.current.getActiveObjects())
     fabricRef.current.getActiveObjects().forEach((obj) => {
       fabricRef.current.remove(obj)
     });
     fabricRef.current.discardActiveObject().renderAll()
   };
+  //////////////////////////////////////////////Создание текста///////////////////////////////////////
+  const createText = (size, color, font, opacity) => {
+    console.log(font)
+    const text = new fabric.Textbox('Type Here', {
+      fontSize: size,
+      fill: color,
+      opacity: opacity,
+      fontFamily: font,
+      top: fabricRef.current.height / 2 - fabricRef.current.height / 4,
+      left: fabricRef.current.width / 2 - fabricRef.current.width / 4,
+    })
 
+    fabricRef.current.add(text)
+    fabricRef.current.setActiveObject(text); // Set the added text as the active object
+  }
+
+  ///////////////////////////////////////Возможность взаемодействовать/////////////////////////////////
+  const allowEditObj = (a, b, c, dell) => {
+    const objects = fabricRef.current.getObjects()
+    objects.forEach((obj) => {
+      obj.lockScalingX = a;
+      obj.lockScalingY = a;
+      obj.lockRotation = a
+      obj.hasControls = b;
+      obj.selectable = c;
+      obj.evented = c;
+      if (!dell) { fabricRef.current.discardActiveObject().renderAll(); }
+      fabricRef.current.renderAll()
+
+    })
+  }
+  //
+
+  //---------------------------------------------------------------------------------------------//
   React.useEffect(() => {
-
-    // const canvasWidth = localStorage.getItem("canvasWidth");
-    // const canvasHeight = localStorage.getItem("canvasHeight");
-    // const canvasBackColor = localStorage.getItem("canvasBackColor");
-
-    // localStorage.clear()
     fabricRef.current = new fabric.Canvas(canvasRef.current, {
       width: canvasWidth || window.innerWidth * 0.7,
       height: canvasHeight || window.innerHeight * 0.8, // размеры холста
       backgroundColor: canvasBackColor || null, //цвет холста
+      selection: false
     });
     const savedCanvasState = localStorage.getItem("canvasState");
     if (savedCanvasState) {
@@ -100,7 +131,6 @@ const EditorPage = () => {
                 maxWidth / img.width,
                 maxHeight / img.height
               );
-              //   console.log(scaleFactor);
               fabricRef.current.setWidth(img.width * scaleFactor);
               fabricRef.current.setHeight(img.height * scaleFactor);
 
@@ -108,16 +138,14 @@ const EditorPage = () => {
             } else {
               fabricRef.current.setWidth(img.width);
               fabricRef.current.setHeight(img.height);
+              saveCanvasState();
             }
           };
           fabricRef.current.renderAll();
         });
       } else {
         fabricRef.current.loadFromJSON(savedCanvasState, () => {
-          // console.log(fabricRef.current.getWidth());
-          // console.log(fabricRef.current.getHeight());
           fabricRef.current.renderAll();
-          // console.log(fabricRef.current.getObjects());
         });
       }
 
@@ -137,7 +165,6 @@ const EditorPage = () => {
             maxWidth / img.width,
             maxHeight / img.height
           );
-          //   console.log(scaleFactor);
           fabric.Image.fromURL(photo, (image) => {
             fabricRef.current.setBackgroundImage(image, fabricRef.current.renderAll.bind(fabricRef.current), {
               scaleX: scaleFactor,
@@ -166,28 +193,6 @@ const EditorPage = () => {
     } else if (canvasMode === 0) {
     }
 
-    // const initFabric = () => {
-    //   fabricRef.current = new fabric.Canvas(canvasRef.current, {
-    //     height: canvasHeight, // размеры холста
-    //     width: canvasWidth,
-    //     backgroundColor: canvasBackColor, //цвет холста
-    //   });
-    // };
-    // initFabric();
-
-    // const addRectangle = () => {
-    //   const rect = new fabric.Rect({
-    //     top: 50,
-    //     left: 50,
-    //     width: 50,
-    //     height: 50,
-    //     fill: "red",
-    //   });
-
-    //   fabricRef.current.add(rect);
-    // };
-    // addRectangle();
-
     const disposeFabric = () => {
       fabricRef.current.dispose();
     };
@@ -195,6 +200,10 @@ const EditorPage = () => {
     fabricRef.current.on("object:added", saveCanvasState);
     fabricRef.current.on("object:removed", saveCanvasState);
     fabricRef.current.on("object:modified", saveCanvasState);
+    // fabricRef.current.renderAll();
+
+    allowEditObj(true, false, false)
+
     fabricRef.current.renderAll();
     saveCanvasState();
 
@@ -204,7 +213,7 @@ const EditorPage = () => {
       fabricRef.current.off("object:modified", saveCanvasState);
       disposeFabric();
     };
-  }, []);
+  }, [canvasBackColor, canvasHeight, canvasMode, canvasWidth, navigate, photo]);
 
   const saveCanvasState = () => {
     const canvasState = JSON.stringify(fabricRef.current.toJSON());
@@ -243,31 +252,110 @@ const EditorPage = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleCrop = () => {
+    // Create a crop selection rectangle
+    const cropRect = new fabric.Rect({
+      fill: 'transparent',
+      strokeWidth: 2,
+      stroke: 'red',
+      selectable: false,
+      evented: false,
+    });
+    fabricRef.current.add(cropRect);
+
+    // Initialize crop selection
+    fabricRef.current.on('mouse:down', handleMouseDown);
+    fabricRef.current.on('mouse:move', handleMouseMove);
+    fabricRef.current.on('mouse:up', handleMouseUp);
+
+    let startX, startY, isDown;
+
+    function handleMouseDown(event) {
+      const pointer = fabricRef.current.getPointer(event.e);
+      startX = pointer.x;
+      startY = pointer.y;
+      isDown = true;
+    }
+
+    function handleMouseMove(event) {
+      if (!isDown) return;
+
+      const pointer = fabricRef.current.getPointer(event.e);
+      const width = pointer.x - startX;
+      const height = pointer.y - startY;
+
+      cropRect.set({
+        left: startX,
+        top: startY,
+        width: width,
+        height: height,
+      });
+      fabricRef.current.renderAll();
+    }
+
+    function handleMouseUp() {
+      isDown = false;
+
+      // Perform crop
+      const activeObject = fabricRef.current.getActiveObject();
+      if (activeObject && activeObject.type === 'image') {
+        const scaleX = activeObject.scaleX;
+        const scaleY = activeObject.scaleY;
+        const cropWidth = cropRect.width * scaleX;
+        const cropHeight = cropRect.height * scaleY;
+        const left = cropRect.left - activeObject.left * scaleX;
+        const top = cropRect.top - activeObject.top * scaleY;
+
+        activeObject.set({
+          clipPath: new fabric.Rect({
+            left: left,
+            top: top,
+            width: cropWidth,
+            height: cropHeight,
+          }),
+        });
+
+        fabricRef.current.remove(cropRect);
+        fabricRef.current.off('mouse:down', handleMouseDown);
+        fabricRef.current.off('mouse:move', handleMouseMove);
+        fabricRef.current.off('mouse:up', handleMouseUp);
+        fabricRef.current.renderAll();
+      }
+    }
+  };
+
+
+
   React.useEffect(() => {
-    fabricRef.current.isDrawingMode = drawMode;
 
-    const penSize = localStorage.getItem("penSize");
-    const penColor = localStorage.getItem("penColor");
+    fabricRef.current.isDrawingMode = draw.mode;
+    fabricRef.current.freeDrawingBrush.width = 1 * draw.sizePen;
+    fabricRef.current.freeDrawingBrush.color = draw.colorPen;
+  }, [draw]);
 
-    fabricRef.current.freeDrawingBrush.width = penSize;
-    fabricRef.current.freeDrawingBrush.color = penColor;
-  }, [drawMode]);
+  const handleColorPick = (event) => {
+    const pointer = fabricRef.current.getPointer(event.e);
+    const color = fabricRef.current.getContext().getImageData(pointer.x, pointer.y, 1, 1).data;
+    const pickedColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] / 255})`;
+    console.log('Picked color:', pickedColor);
+    // Do something with the picked color (e.g., update state, trigger an action, etc.)
+  };
+  const handlePepette = (event) => {
+    fabricRef.current.on('mouse:down', handleColorPick);
+
+    // fabricRef.current.off('mouse:down', handleColorPick);
+  };
 
   return (
     <div className="box_all_holst_ed_p">
       <div className="box_holst_ed_p">
         <div>
-          <SideBar setDrawMode={setDrawMode} onAddRectangle={onAddRectangle} onAddCircle={onAddCircle} onAddEllipse={onAddEllipse} onDeleteObjects={onDeleteObjects} />
+          <SideBar onMove={allowEditObj} createText={createText} draw={draw} setDraw={setDraw} onAddRectangle={onAddRectangle} onAddCircle={onAddCircle} onAddEllipse={onAddEllipse}
+            onDeleteObjects={onDeleteObjects} onAddSelection={onAddSelection} onRemoveSelection={onRemoveSelection} />
           <UpperBar canvasName={canvasName} handleImageUpload={handleImageUpload} />
-
-          {/* <button onClick={onAddCircle}>Add Circle</button>
-                    <button onClick={onAddLine}>Add Line</button>
-                    <button onClick={onAddRectangle}>Add Rectangle</button>
-                    <button onClick={onAddImage}>Add Image</button>
-                    <button onClick={onDelete}>Delete</button> */}
         </div>
         <div className="row_box_canvas">
-          {/* <FabricJSCanvas className="sample-canvas" onReady={onReady} /> */}
+          <button onClick={handlePepette}>pepette</button>
           <canvas
             className="sample-canvas"
             id="canvas"
@@ -275,79 +363,10 @@ const EditorPage = () => {
           ></canvas>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
 export default EditorPage;
 
-//sanya code, modes of canvas
-/*if (savedCanvasState) {
-      fabricRef.current.loadFromJSON(savedCanvasState, () => {
-        fabricRef.current.renderAll();
-        // console.log(fabricRef.current.getObjects());
-      });
-    } else if (canvasMode === 3) {
-      // fabricRef.current.loadFromJSON(savedCanvasState, () => {
-      //   fabricRef.current.renderAll();
-      //   // console.log(fabricRef.current.getObjects());
-      // });
-    } else if (canvasMode === 1) {
-      if (!photo) {
-        navigate("/createproject");
-      }
-      const img = new Image();
-      img.src = photo;
-      img.onload = () => {
-        const maxWidth = window.innerWidth * 0.7;
-        const maxHeight = window.innerHeight * 0.8;
 
-        if (img.width > maxWidth || img.height > maxHeight) {
-          const scaleFactor = Math.min(
-            maxWidth / img.width,
-            maxHeight / img.height
-          );
-          //   console.log(scaleFactor);
-          fabric.Image.fromURL(photo, (image) => {
-            image.set({
-              scaleX: scaleFactor,
-              scaleY: scaleFactor,
-            });
-            fabricRef.current.setWidth(image.width * scaleFactor);
-            fabricRef.current.setHeight(image.height * scaleFactor);
-
-            fabricRef.current.centerObject(image);
-
-            image.lockMovementX = true;
-            image.lockMovementY = true;
-            image.lockRotation = true;
-
-            image.hasControls = false;
-            image.hasBorders = false;
-
-            fabricRef.current.add(image);
-          });
-          saveCanvasState();
-        } else {
-          fabric.Image.fromURL(photo, (image) => {
-            fabricRef.current.setWidth(image.width);
-            fabricRef.current.setHeight(image.height);
-
-            fabricRef.current.centerObject(image);
-
-            image.lockMovementX = true;
-            image.lockMovementY = true;
-            image.lockRotation = true;
-            image.hasControls = false;
-            image.hasBorders = false;
-
-            fabricRef.current.add(image);
-          });
-        }
-      };
-    } else if (canvasMode === 0) {
-      fabricRef.current.setWidth(canvasWidth);
-      fabricRef.current.setHeight(canvasHeight);
-      fabricRef.current.backgroundColor = canvasBackColor;
-      fabricRef.current.renderAll();
-    } */

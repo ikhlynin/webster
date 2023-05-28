@@ -8,7 +8,6 @@ export const UpperBar = ({ canvasName, handleImageUpload }) => {
   const [settingsShow, setSettingsShow] = useState(-1);
 
   //   const tempName = localStorage.getItem("canvasName");
-  console.log(canvasName);
   const [name, setName] = useState(canvasName);
   function setAllToFalse() {
     setFileShow(-1);
@@ -49,8 +48,8 @@ export const UpperBar = ({ canvasName, handleImageUpload }) => {
         <div className="upperbar_menu_item">Create new</div>
         <div className="upperbar_menu_item">Choose a sample</div>
         <div className="upperbar_menu_item">
-          <label for="file_out" class=" feedback__label1">Add image </label>
-          <input type="file" id="file_out" class="feedback__file" onChange={handleImageUpload} /></div>
+          <label for="file_out" className=" feedback__label1">Add image </label>
+          <input type="file" id="file_out" className="feedback__file" onChange={handleImageUpload} /></div>
         <div
           className="upperbar_menu_item"
           onClick={() => {

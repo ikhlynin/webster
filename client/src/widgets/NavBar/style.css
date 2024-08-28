@@ -45,3 +45,86 @@
 	letter-spacing: 0.1rem;
 	margin-top: 0.4rem;
 }
+
+.login_box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.button_active_us {
+	background-color: #4416796b;
+	color: white;
+	border: none;
+	font-size: 1.4rem;
+	height: 3rem;
+	width: 50%;
+	margin-top: 0.6rem;
+	transition: all 0.3s ease;
+	border-radius: 0.5rem;
+	font-family: raleway_f, sans-serif;
+}
+
+.box_imp_us_act {
+	margin-top: 10px;
+}
+
+.ab {
+	display: flex;
+	flex-direction: row;
+	justify-content: center
+}
+
+.box_imp_us_act label {
+	display: block;
+	width: 120px;
+	color: rgb(113, 68, 131);
+	font-family: raleway_f, sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+.box_imp_us_act input {
+	width: auto;
+	color: rgb(36, 18, 43);
+}
+
+.title_form_us_act {
+	font-size: 40px;
+	letter-spacing: calc(var(--index) / 2.25);
+	margin-bottom: 1rem;
+	text-transform: uppercase;
+	font-weight: 900;
+	color: rgb(113, 68, 131);
+	text-shadow: 0 0 15px #9463e9;
+	font-family: raleway_f, sans-serif;
+	line-height: 1.55;
+}
+
+.auth_input {
+	width: 12rem;
+	font-size: 1.4rem;
+	background-color: #ffffff00;
+	border: none;
+	border-bottom: 0.25rem solid #1a0a30;
+	transition: all 0.5s ease;
+	color: rgba(255, 255, 255, 0.781);
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.auth_input:focus {
+	outline: none;
+	border: none;
+	border-bottom: 0.25rem solid #0c03338c;
+}
+
+.auth_input::selection {
+	background-color: #36196db6;
+}
+
+.auth_input::placeholder {
+	color: rgba(255, 255, 255, 0.39);
+}

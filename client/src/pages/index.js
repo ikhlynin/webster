@@ -14,7 +14,7 @@ export const Routing = () => {
             <Route path="/" element={<Layout />}>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/createproject" element={<CreatePage />} />
-                <Route path="/editor" element={<EditorPage />} />
+                <Route path="/editor/:id" element={<EditorPage />} />
 
             </Route>
         </Routes>

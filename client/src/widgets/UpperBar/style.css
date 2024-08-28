@@ -42,7 +42,7 @@
     background-color: #8B7FAB;
     z-index: 10;
     top: 1.5rem;
-    left: 36.45rem;
+    left: 27.5rem;
 }
 
 .upperbar_menu_item {
@@ -70,4 +70,12 @@
 
 .feedback__file {
     display: none;
+}
+
+.filters_box {
+    position: absolute;
+    background-color: #8B7FAB;
+    z-index: 10;
+    top: 3rem;
+    left: 40.75rem;
 }

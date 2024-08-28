@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Context } from "../..";
 
 import { Modal } from "../PopUp";
 
@@ -11,6 +12,7 @@ import a5 from "./assets/a5.png";
 import b3 from "./assets/b3.png";
 import b4 from "./assets/b4.png";
 import b5 from "./assets/b5.png";
+import { ProductItemsCat } from "../EventItemCat";
 
 ////!!!!!!!! 0 = new project, 1 = download, 2 = templates, 3 = existing project
 
@@ -21,20 +23,41 @@ export const Types = () => {
   const [width, setWidth] = useState(70);
   const [height, setHeight] = useState(70);
   const [backColor, setBackColor] = useState(null);
+
+  const [dataAllPr, setDataAllPr] = useState([]);
+
+  const { store } = useContext(Context);
   let navigate = useNavigate();
-  const setDataProject = (event, mode) => {
+  const setDataProject = async (event, mode) => {
     event.preventDefault();
-    localStorage.clear();
-    navigate("/editor", {
-      state: {
-        canvasName: name,
-        canvasWidth: width,
-        canvasHeight: height,
-        canvasBackColor: backColor,
-        mode: mode,
-        image: selectedImage,
-      },
-    });
+    if (localStorage.getItem("canvasState")) {
+      localStorage.removeItem("canvasState");
+    }
+    if (store.isAuth === true) {
+      const projectId = await store.newPr(name, store.user.id)
+      navigate(`/editor/${projectId}`, {
+        state: {
+          canvasName: name,
+          canvasWidth: width,
+          canvasHeight: height,
+          canvasBackColor: backColor,
+          mode: mode,
+          image: selectedImage,
+        },
+      });
+    } else {
+      navigate("/editor/new", {
+        state: {
+          canvasName: name,
+          canvasWidth: width,
+          canvasHeight: height,
+          canvasBackColor: backColor,
+          mode: mode,
+          image: selectedImage,
+        },
+      });
+    }
+
 
   };
 
@@ -51,8 +74,20 @@ export const Types = () => {
       reader.readAsDataURL(file);
     }
   }
+
+  useEffect(() => {
+    async function getAllPr() {
+      const data = await store.getAllProjct(store.user.id);
+      setDataAllPr(data)
+    }
+    if (store.isAuth === true)
+      getAllPr();
+
+  }, [])
+
+
   return (
-    <div className="box_cr_p">
+    <div className="box_cr_p1">
       <button className="button_cr_p " onClick={() => { setModalActive(true); setTypesProject("newPr") }}>
         New project
       </button>
@@ -62,6 +97,8 @@ export const Types = () => {
       <Link>
         <button className="button_cr_p " onClick={() => { setModalActive(true); setTypesProject("templPr") }}>Templates</button>
       </Link>
+      {store.isAuth === true ? <ProductItemsCat dataAllPr={dataAllPr} /> : ''}
+
       <Modal active={modalActive} setActive={setModalActive}>
         {typesProject === 'newPr' ?
           <form className="box_from_tp">

@@ -7,7 +7,7 @@ const CreatePage = () => {
     return (
         <div className='box_cr_p'>
             <Types />
-        </div>
+        </div >
 
     );
 };

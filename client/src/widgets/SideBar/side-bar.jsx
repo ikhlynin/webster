@@ -14,7 +14,7 @@ import redo from './assets/redo.png'
 import undo from './assets/undo.png'
 import "./style.css"
 
-export const SideBar = ({ createText, draw, setDraw, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects, onAddSelection, onRemoveSelection, onMove }) => {
+export const SideBar = ({ setColorGlobal, colorGlobal, handlePepette, createText, draw, setDraw, onAddRectangle, onAddCircle, onAddEllipse, onDeleteObjects, onAddSelection, onRemoveSelection, onMove }) => {
     const [activeName, setActive] = useState('')
 
     const instruments = [
@@ -35,10 +35,13 @@ export const SideBar = ({ createText, draw, setDraw, onAddRectangle, onAddCircle
     return (
         <div className='sidebar_box'>
             {instruments.map((item, index) =>
-                <Instrument onMove={onMove} createText={createText} draw={draw} setDraw={setDraw} name={item.name} source={item.source} key={index} active={activeName} setActive1={setActive}
-                    onAddRectangle={onAddRectangle} onAddCircle={onAddCircle} onAddEllipse={onAddEllipse} onDeleteObjects={onDeleteObjects} onAddSelection={onAddSelection} onRemoveSelection={onRemoveSelection} />
+                <Instrument setColorGlobal={setColorGlobal} colorGlobal={colorGlobal} handlePepette={handlePepette} onMove={onMove} createText={createText}
+                    draw={draw} setDraw={setDraw} name={item.name} source={item.source} key={index}
+                    active={activeName} setActive1={setActive} onAddRectangle={onAddRectangle}
+                    onAddCircle={onAddCircle} onAddEllipse={onAddEllipse} onDeleteObjects={onDeleteObjects}
+                    onAddSelection={onAddSelection} onRemoveSelection={onRemoveSelection} />
             )}
-            <input className='color_box_sd' type='color' />
+            <input className='color_box_sd' type='color' value={colorGlobal} />
         </div>
     )
 }

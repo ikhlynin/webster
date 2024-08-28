@@ -21,11 +21,11 @@ export const UpperBar = () => {
                 <div className='upperbar_menu_item'>Close</div>
             </div>
 
-            <div className='upperbar_item' onClick={() => { setAllToFalse(); setSelectionShow(selectionShow * -1) }}> Select </div>
+            {/* <div className='upperbar_item' onClick={() => { setAllToFalse(); setSelectionShow(selectionShow * -1) }}> Select </div>
             <div className={selectionShow === 1 ? 'upperbar_menu_selection' : 'upperbar_menu_selection hidden'}>
                 <div className='upperbar_menu_item'>Invert</div>
                 <div className='upperbar_menu_item'>Diselect</div>
-            </div>
+            </div> */}
 
             <div className='upperbar_item' onClick={() => { setAllToFalse(); setSettingsShow(settingsShow * -1) }}> Edit canvas </div>
             <div className={settingsShow === 1 ? 'upperbar_menu_settings' : 'upperbar_menu_settings hidden'}>

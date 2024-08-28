@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Reem+Kufi+Fun:wght@700&display=swap');
 
-.box_cr_p {
+.box_cr_p1 {
+	padding-top: 100px;
 	width: 100%;
 	display: flex;
 	flex-direction: column;

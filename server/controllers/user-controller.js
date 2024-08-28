@@ -6,11 +6,10 @@ const tokenService = require("../services/token-service");
 class UserController {
   async registration(req, res, next) {
     try {
-      console.log(req.body);
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return next(ApiError.BadRequest("Validation error", errors.array()));
-        }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.BadRequest("Validation error", errors.array()));
+      }
       const { name, email, password } = req.body;
       const userData = await UserServices.registration(email, password, name);
       res.cookie("refreshToken", userData.refreshToken, {
@@ -58,9 +57,25 @@ class UserController {
     }
   }
 
+  // async refresh(req, res, next) {
+  //   try {
+  //     const { refreshToken } = req.cookies;
+  //     const userData = await UserServices.refresh(refreshToken);
+  //     res.cookie("refreshToken", userData.refreshToken, {
+  //       maxAge: 30 * 24 * 60 * 60 * 1000,
+  //       httpOnly: true,
+  //     });
+  //     return res.json(userData);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
+
+      if (!refreshToken) return res.json("auth: false");
+
       const userData = await UserServices.refresh(refreshToken);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -71,6 +86,21 @@ class UserController {
       next(e);
     }
   }
+  async checkAuth(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+
+      if (!refreshToken) return res.json("auth: false");
+
+      const userData = await UserServices.checkAuth(refreshToken);
+
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+
 
   async updUser(req, res, next) {
     try {
